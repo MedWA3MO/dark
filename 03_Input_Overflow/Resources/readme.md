@@ -5,7 +5,7 @@
 **Proof-of-concept (POC) request that returned the flag:**
 
 ```bash
-curl -s 'http://localhost:8080/index.php?page=survey' --data 'sujet=2&valeur=770'
+curl -s 'http://localhost:8080/index.php?page=survey' --data 'sujet=2&valeur=770' 
 ```
 
 ---

@@ -1,0 +1,22 @@
+
+
+1 done  done
+4 done
+
+9 done
+10 done
+13 done
+14 done
+
+
+
+
+ 15 ...
+
+
+
+
+
+
+
+rm -rf ~/.cache/thumbnails/* && rm -rf ~/.cache/mozilla/* && rm -rf ~/.local/share/Trash/* && rm -rf /tmp/* 2>/dev/null && pkill -f firefox && pkill -f chrome && echo "Cleanup complete (no sudo)!"

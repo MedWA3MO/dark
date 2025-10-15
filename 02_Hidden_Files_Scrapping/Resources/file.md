@@ -56,7 +56,7 @@ After the `wget` run, I used `grep` to quickly find any README or text file that
 #### Command I used:
 
 ```bash
-grep -inE "flag|encrypt|lowercase" * 2>/dev/null
+grep -inE "flag|encrypt" * 2>/dev/null
 ```
 
 **Why and what each part does:**
