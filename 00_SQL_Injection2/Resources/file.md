@@ -1,11 +1,7 @@
-# Extract the Final Flag from `Member_images.list_images`
+# Extract the Flag from `Member_images.list_images`
 
-### **1. Understand the scenario**
+### **1. the scenario**
 
-* You have a vulnerable form that reflects database query results (`First name` and `Surname`) using a **`UNION SELECT` SQL injection**.
-* You already enumerated tables and found `Member_images.list_images`.
-* Using `UNION SELECT`, you retrieved the **columns** and **data** from this table.
-i had already grab all the databases inside with this : 
 
 ```sql 
 1 UNION SELECT schema_name, NULL FROM information_schema.schemata 
@@ -62,7 +58,7 @@ Injected:
 
 ```
 First name: Hack me ?
-Surname : If you read this just use this md5 decode lowercase then sha256 to win this flag ! : 1928e8083cf461a51303633093573c46
+Surname : If I read this just use this md5 decode lowercase then sha256 to win this flag ! : 1928e8083cf461a51303633093573c46
 ```
 Using
 
@@ -84,7 +80,7 @@ Using
 
 #### b) Step 1 — MD5 decode
 
-* You can use **online MD5 lookup** tools (or a local script).
+* I can use **online MD5 lookup** tools (or a local script).
 * Decoded result:
 
 ```
@@ -118,9 +114,8 @@ the application interpolates user input directly into SQL queries (no parameteri
 
 
 > tips:
-* information_schema is a metadata database provided by most RDBMSs
-* schemata is the table that lists all schemas/databases on the server
-* information_schema is a metadata database listing databases/tables/columns
+* information_schema is a metadata database provided by most RDBMSs for listing databases/tables/columns
+* schemata is the table that lists all schemas/databases on the server 
 * CHAR(...) / 0x... encoding  used to bypass naive filters and quoting differences between DB engines.
 * Column-count & type matching — attackers often trial-and-error to match the number and datatypes of columns returned by the original query
 * Why GROUP_CONCAT / GROUP_CONCAT(column) — to combine column names into a single output cell

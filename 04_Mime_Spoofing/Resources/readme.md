@@ -84,6 +84,8 @@ Browsers, on the other hand, **don’t let you override Content-Type or form fie
 
 **A01 - Broken Access Control**
 *(because the system fails to properly restrict what files can be uploaded and executed)*
-
+**OR**
+**A03 - Injection**
+*(because we inject a script to the server and it can contain a malicious scrapping mechanism to extract server sensative informations)
 ---
 
