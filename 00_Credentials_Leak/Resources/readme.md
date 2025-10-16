@@ -1,19 +1,11 @@
 
-# 🛡️ Restrict Access Vulnerability
+# Restrict Access Vulnerability
 
 ## 1. How did I spot the vulnerability?
 
 Fetched `htpasswd` and inspected it:
 
 ```bash
-curl -s http://localhost:8080/htpasswd
-# Output:
-# User-agent: *
-# Disallow: /whatever
-# Disallow: /.hidden
-
-
-The `Disallow` entries revealed hidden directories.
 
 Navigated to `/whatever/` and discovered a publicly accessible `.htpasswd`:
 
@@ -28,8 +20,9 @@ Identified the hash as MD5 (via hash identifier / online lookup) and recovered t
 Used the credentials to access the admin area (common URL `/admin`) and retrieved the flag:
 
 ```bash
-curl -s -u root:qwerty123@ http://localhost:8080/admin | grep -i flag
-# flag: <REDACTED-FLAG-FROM-ADMIN>
+curl -sS -X POST \
+  -d "username=root&password=qwerty123%40&Login=Login" \
+  http://localhost:8080/admin/ | grep flag
 ```
 
 ---
