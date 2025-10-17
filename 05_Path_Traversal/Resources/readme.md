@@ -30,15 +30,22 @@ In short: the server trusted user input for selecting files and lacked server-si
 
 ### Realistic discovery method
 
-1. Inspect the application to find a parameter that selects or loads files (e.g., `page`, `file`, `img`, `download`, `page=media&src=...`, etc.).
-2. Try simple traversal payloads in the parameter to test whether `..` sequence is interpreted by the server:
+1. Try simple traversal payloads in the parameter to test whether `..` sequence is interpreted by the server:
 
-   * `../etc/passwd`
-   * `../../etc/passwd`
-   * `../../../etc/passwd`
+   * `../`
+   * `../../`
+   * `../../../`
      Increase the number of `../` until you escape the webroot.
-3. When the server returned file contents (or stopped returning an error), refine payloads to locate the flag file or other sensitive files.
-
+2. i try many files/locations that could contain any sensative data in a linux/unix systems like :
+* /etc/shadow
+* /etc/gshadow
+* /etc/ssh/ssh_host_*
+* .ssh/id_rsa
+* /etc/ssl/private/
+* /etc/mysql/my.cnf, /etc/postgresql/*
+* config.php, settings.php
+* /proc/kcore, /dev/mem, /dev/kmem
+* then /etc/passwd reveals the flag.
 ---
 
 ## 4) What the impact could be
@@ -61,12 +68,3 @@ In short: the server trusted user input for selecting files and lacked server-si
 4. Run the application with **least privilege**—it should not have access to sensitive filesystem areas.
 
 
-### Example Nginx / Apache config-level protection
-
-* In Nginx, serve files only from specific `root` and disallow paths containing `..` through validation in application or use `try_files` safely.
-* php prevention example:
-
-```php 
-IF request_param contains '../' OR contains 'php://filter' OR request_path endswith '/etc/passwd'
-THEN log & alert high
-```

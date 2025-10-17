@@ -40,7 +40,7 @@ After the `wget` run, I used `grep` to quickly find any README or text file that
 #### Command I used:
 
 ```bash
-grep -inE "flag|encrypt" * 2>/dev/null
+grep -inE "flag|encrypt|lowercase" * 2>/dev/null
 ```
 
 **Why and what each part does:**
@@ -79,26 +79,11 @@ Record that value (and screenshot or save the response) for your report.
 
 
 
-##  What the vulnerability is (classification, OWASP)
-
-**Vulnerability name:** Directory indexing / exposed files (information disclosure).
+###  What the vulnerability is (classification, OWASP)
 
 **OWASP classification:**
 
-* **Primary:** **Security Misconfiguration** (OWASP Top 10 — A05 or the equivalent depending on the year): the web server is exposing internal folders and files through an index.
-* **Secondary:** **Sensitive Data Exposure** (A03) when the exposed files contain secrets/flags.
-  (You may also mention **Broken Access Control** if files should have been protected but were not.)
-
-**Short description:** The web server allows directory listing and stores sensitive files inside a publicly accessible path. Anyone who browses to `.hidden/` can enumerate files and retrieve secret data.
-
----
-
-##  Why it exists (the root cause / security flaw)
-
-* **Directory listing enabled:** The web server is configured to show directory contents when no index file exists (e.g., `Options +Indexes` or equivalent).
-* **Secrets stored under webroot:** Files containing sensitive information (flags, notes) were placed in a folder served by the webserver instead of a protected location.
-* **False sense of hiding:** A `robots.txt` or random folder names were used to “hide” content, but `robots.txt` is advisory and *does not* prevent access. Security by obscurity (random names) is not protection.
-* **No access control:** No authentication or ACLs protect `.hidden/` or its subfolders.
+* **Sensitive Data Exposure** (A03) when the exposed files contain secrets/credentials, because the web server allows directory listing and stores sensitive files inside a publicly accessible path. Anyone who browses to `.hidden/` can enumerate files and retrieve secret data.
 
 ---
 
@@ -111,38 +96,4 @@ Record that value (and screenshot or save the response) for your report.
 
    * e.g., move `/var/www/html/.hidden/` contents to `/var/secrets/` or delete if not needed.
 
-2. **Disable directory listing** on the web server:
-
-   * **Apache (global or in site config / `.htaccess`):**
-
-     ```apache
-     Options -Indexes
-     ```
-   * **Nginx:**
-
-     ```nginx
-     location / {
-       autoindex off;
-     }
-     ```
-
-3. **Restrict access to the directory** (if the directory must remain on the server):
-
-   * Apache `.htaccess`:
-
-     ```
-     <Directory "/var/www/html/.hidden">
-       Require all denied
-     </Directory>
-     ```
-   * Nginx:
-
-     ```nginx
-     location /.hidden/ {
-       deny all;
-       return 403;
-     }
-     ```
-   * Or protect with HTTP auth if needed for legitimate users.
-
-4. **Remove sensitive lines from `robots.txt`** that claim to “hide” directories — `robots.txt` is not a security measure. (Either remove `Disallow: /.hidden` or keep it only if you understand it’s not protective. But don’t rely on it to hide secrets.)
+2. **Remove sensitive lines from `robots.txt`** that claim to “hide” directories — `robots.txt` is not a security measure. (Either remove `Disallow: /.hidden` or keep it only if you understand it’s not protective. But don’t rely on it to hide secrets.)
