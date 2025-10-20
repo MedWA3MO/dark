@@ -28,7 +28,7 @@ Instead of clicking each folder, I used a controlled `wget` approach to download
 * `-r` (recursive): follow links on pages to find files. We must follow the index links to reach subfolders.
 * `-np` (no-parent): prevents `wget` from following links back to parent directories. Keeps the crawl inside `.hidden/`.
 * `-nd` (no-directories): save all files to the current local directory rather than recreating the remote directory tree. This keeps filenames simple and easy to search locally.
-* `-e robots=off`: ignore `robots.txt` rules. In local labs this helps fetch files that might otherwise be hidden by robots rules (safe for local testing). Use carefully on remote targets.
+* `-e robots=off`: ignore `robots.txt` rules. 
 * `-A "README*,README,flag*,Flag*,*.txt"` (accept list): only download files whose names match these patterns. This prevents `wget` from saving every single asset (images, css) — it only saves likely README/flag files and `.txt` files where the flag might be.
 
 ---

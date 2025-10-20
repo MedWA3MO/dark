@@ -63,7 +63,6 @@ The application relies on a client-supplied cookie value to decide whether the u
 
 **Never make authorization decisions solely based on client-side values.** The server must validate identity and permissions using server-controlled state or cryptographically protected tokens.
 
-### Immediate Fixes (Short-Term)
 
 * **Stop trusting `I_am_admin` cookie:** Remove logic that reads this cookie and grants privileges directly.
 * **Require proper server-side session authentication** for admin actions (e.g., `$_SESSION['is_admin']` set on the server after a secure login).

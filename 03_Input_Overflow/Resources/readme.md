@@ -7,7 +7,7 @@
 ```bash
 curl -s 'http://localhost:8080/index.php?page=survey' --data 'sujet=2&valeur=770' 
 ```
-
+> Using --data or -d automatically makes it a POST request, even without specifying -X POST.
 ---
 
 ## 1) What the vulnerability is (short)
